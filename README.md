@@ -9,6 +9,7 @@
   
    <img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
 </p>
+
 ## Description
 This is an appointment booking system built with Spring Boot (Java) for the backend and React for the frontend. The system allows users to book, view, update, and cancel appointments through a user-friendly interface. Data is persisted in a MySQL database.
 
