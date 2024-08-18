@@ -1,0 +1,21 @@
+
+.info-container{
+    color: #2b2d42;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 50%;
+}
+.info-container h1{
+    text-align: center;
+    font-size: 50px;
+
+}
+.info-container p{
+    text-align: center;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 2px;
+}

@@ -1,0 +1,27 @@
+.header-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    top: 1%;
+    left: 0;
+    width: 25vw;
+}
+.header-container a{
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 150px;
+    background-color: #2b2d42;
+    color: #f1faee;
+    transition: 0.5s ease-in-out;
+}
+.header-container a:hover{
+    background-color: #f1faee;
+    color: #2b2d42;
+}

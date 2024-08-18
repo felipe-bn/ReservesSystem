@@ -1,0 +1,73 @@
+.footer-container{
+    position: relative;
+    color: #2b2d42;
+    height: 150px;
+    background-color: #f1faee;
+    border-top: 3px solid #2b2d42;
+    margin: 0;
+    bottom: 0;
+    width: 100%;
+}
+.socialSvg{
+    fill: #f1faee;
+    height: 25px;
+    width: 25px;
+    
+}
+.btn-link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition:  0.7s ease-in;
+}
+.btn-link:hover{
+    background-color: #f1faee;
+}
+.btn-link:hover .socialSvg{
+    animation: slideIn 0.7s both;
+    fill: #2b2d42;
+}
+.social-media{
+    border-radius: 8px;
+    background-color: #2b2d42;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: fit-content;
+    gap: 25px;
+    padding: 25px;
+}
+
+.logo{
+    width: 50px;
+    height: 50px;
+}
+.footer-container p{
+    cursor: pointer;
+    font-weight: 500;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+}
+@keyframes slideIn{
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+    
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+}
