@@ -1,6 +1,6 @@
-package com.Backend.System.Repository;
+package com.example.System.Repository;
 
-import com.Backend.System.Models.User;
+import com.example.System.Models.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
