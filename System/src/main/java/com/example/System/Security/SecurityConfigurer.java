@@ -33,8 +33,7 @@ public class SecurityConfigurer {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/user").permitAll()
+                        .requestMatchers("/auth/login", "/user/save").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(withDefaults())

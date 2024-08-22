@@ -79,6 +79,9 @@ public class UserService {
                 usr.setUserId(user.getUserId());
                 usr.setUsername(user.getUsername());
                 usr.setTelephone(user.getTelephone());
+                usr.setNickname(user.getNickname());
+                usr.setSurname(user.getSurname());
+                usr.setDateBirth(user.getDateBirth());
                 // Update the fields in the user retrieved from the database.
 
                 // Note: Password and email fields are not updated here because they require additional validation.
@@ -112,5 +115,6 @@ public class UserService {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 }

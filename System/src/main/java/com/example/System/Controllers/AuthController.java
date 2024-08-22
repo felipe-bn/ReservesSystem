@@ -17,7 +17,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> authenticateUser(@RequestBody User loginRequest){
-        if (loginRequest.getUsername() == null || loginRequest.getPassword() == null) {
+        if (loginRequest.getUsername().isBlank() || loginRequest.getPassword().isBlank()) {
             return ResponseEntity.badRequest().body("Username and password are required");
         }
         return us.authenticateAndGenerateToken(loginRequest.getUsername(), loginRequest.getPassword());

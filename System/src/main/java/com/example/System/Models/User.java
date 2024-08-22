@@ -18,6 +18,9 @@ public class User {
     private Long userId;
     private String username;
     private String password;
+    private String nickname;
+    private String surname;
+    private String dateBirth;
     private String email;
     private String telephone;
 }
