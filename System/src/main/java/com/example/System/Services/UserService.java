@@ -3,6 +3,7 @@ package com.example.System.Services;
 import com.example.System.Models.User;
 import com.example.System.Repository.UserRepository;
 import com.example.System.Security.Jwt.JwtService;
+import com.example.System.Utils.RandomNumberGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
 
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -21,20 +24,22 @@ public class UserService {
     private final AuthenticationManager am;
     private final JwtService jwts;
     private PasswordEncoder pe;
+    private final  RandomNumberGenerator random;
     @Autowired
     public UserService(UserRepository ur, JwtService jwts, AuthenticationManager am, PasswordEncoder pe) {
         this.ur = ur;
         this.jwts = jwts;
         this.am = am;
         this.pe = pe;
+        this.random = RandomNumberGenerator.getInstance();
     }
 
-    public ResponseEntity<String> authenticateAndGenerateToken(String username, String password) {
+    public ResponseEntity<String> authenticateAndGenerateToken(String email, String password) {
         try {
-            if(ur.findByUsername(username).isPresent()){
-                User user = ur.findByUsername(username).get();
+            if(ur.findByEmail(email).isPresent()){
+                User user = ur.findByEmail(email).get();
                 if(pe.matches(password, user.getPassword())){
-                    String token = jwts.generateToken(user.getUsername());
+                    String token = jwts.generateToken(user.getEmail(), user.getUserId());
                     return ResponseEntity.ok(token);
                 }
                 return ResponseEntity.status(NOT_FOUND).body("Credentials do not match");
@@ -48,12 +53,13 @@ public class UserService {
 
     public ResponseEntity saveUser(User user) {
         try {
-            if (ur.findByUsername(user.getUsername()).isPresent()) {
+            if (ur.findByEmail(user.getEmail()).isPresent()) {
                 // Evaluate if the username already exists...
-                return ResponseEntity.status(CONFLICT).body("Already exist user whit the username: " + user.getUsername());
+                return ResponseEntity.status(CONFLICT).body("Already exist user whit the email  " + user.getEmail());
             }
             // Save user if the username don´t exists...
             user.setPassword(pe.encode(user.getPassword()));
+            user.setUserId(random.generateUniqueId(ur));
             ur.save(user);
             return ResponseEntity.status(CREATED).build();
         } catch (Exception e) {
@@ -65,7 +71,7 @@ public class UserService {
     public ResponseEntity updateUser(Long id,String token, User user) {
         try {
             // Validate the JWT token. Check if the token is valid and not expired.
-            if(!jwts.validateToken(token, user.getUsername())) {
+            if(!jwts.validateToken(token, user.getEmail())) {
                 // If the token is expired or invalid, return an UNAUTHORIZED response.
                 return ResponseEntity.status(UNAUTHORIZED).body("Token Expired");
             }
@@ -77,7 +83,6 @@ public class UserService {
 
                 User usr = ur.findById(id).get(); // get the user from the database...
                 usr.setUserId(user.getUserId());
-                usr.setUsername(user.getUsername());
                 usr.setTelephone(user.getTelephone());
                 usr.setNickname(user.getNickname());
                 usr.setSurname(user.getSurname());
@@ -96,7 +101,7 @@ public class UserService {
     public ResponseEntity deleteUser(User user, String token){
         try {
             // Validate the JWT token. Check if the token is valid and not expired.
-            if (!jwts.validateToken(token, user.getUsername())) {
+            if (!jwts.validateToken(token, user.getEmail())) {
                 // If the token is expired or invalid, return an UNAUTHORIZED response.
                 return ResponseEntity.status(UNAUTHORIZED).body("Token Expired");
             } else {

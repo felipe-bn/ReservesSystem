@@ -10,7 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
+    @Override
+    boolean existsById(Long  number);
 
-    @Query("SELECT u FROM User u WHERE u.username = :username")
-    Optional<User> findByUsername(@Param("username") String username);
+    @Query("SELECT u FROM User u WHERE u.email = :email")
+    Optional<User> findByEmail(@Param("email") String email);
 }

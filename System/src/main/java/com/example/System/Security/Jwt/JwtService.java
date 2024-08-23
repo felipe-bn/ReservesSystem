@@ -1,9 +1,14 @@
 package com.example.System.Security.Jwt;
 
+import com.example.System.Repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 
@@ -16,7 +21,6 @@ public class JwtService {
 
     @Value("${jwt.secret}")
     private String secretKey;
-
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -46,14 +50,23 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, Long id) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + 10 * 60 * 60 * 1000);
         return Jwts.builder()
                 .setSubject(username)
                 .setExpiration(expiryDate)
+                .claim("userId", id)
                 .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
                 .compact();
+    }
+
+    public String extractToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 
     public Boolean validateToken(String token, String username) {

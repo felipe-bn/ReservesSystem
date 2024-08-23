@@ -17,10 +17,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> authenticateUser(@RequestBody User loginRequest){
-        if (loginRequest.getUsername().isBlank() || loginRequest.getPassword().isBlank()) {
-            return ResponseEntity.badRequest().body("Username and password are required");
+        if (loginRequest.getEmail().isBlank() || loginRequest.getPassword().isBlank()) {
+            return ResponseEntity.badRequest().body("Email and password are required");
         }
-        return us.authenticateAndGenerateToken(loginRequest.getUsername(), loginRequest.getPassword());
+        return us.authenticateAndGenerateToken(loginRequest.getEmail(), loginRequest.getPassword());
     }
 
 }
